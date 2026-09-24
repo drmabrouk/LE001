@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منظومة تقارير أكاديمية السباحة - ISCS MUW</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius: 10px;
+            --pill-radius: 9999px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        header span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        @media (max-width: 1100px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input, select, textarea {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--pill-radius);
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Sidebar Preview */
+        .preview-sidebar {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 1.5rem;
+            height: calc(100vh - 3rem);
+        }
+
+        .preview-box {
+            background-color: #075e54;
+            color: #ffffff;
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            flex: 1;
+            overflow-y: auto;
+            direction: ltr;
+            text-align: left;
+            border: 1px solid #128c7e;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 1rem;
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .actions-bar .btn {
+            flex: 1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--success);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: var(--pill-radius);
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ISCS MUW | Swimming Academy</h1>
+        <span>تقرير الإيرادات والحضور اليومي</span>
+    </header>
+
+    <div class="main-container">
+        <!-- Forms Area -->
+        <div class="form-section">
+            <!-- General Info -->
+            <div>
+                <div class="section-title">📅 معلومات التقرير</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>تاريخ التقرير</label>
+                        <input type="date" id="reportDate">
+                    </div>
+                    <div class="input-group">
+                        <label>عدد حضور المشتركين اليوم (Total Student Attendance)</label>
+                        <input type="number" id="studentAttendance" value="45">
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Registration -->
+            <div>
+                <div class="section-title">📝 التسجيلات الجديدة (New Swimming Reg)</div>
+                <div class="grid-3">
+                    <div class="input-group">
+                        <label>عدد التسجيلات الجديدة</label>
+                        <input type="number" id="newRegCount" value="9">
+                    </div>
+                    <div class="input-group">
+                        <label>دفع بطاقة (CARD Payment AED)</label>
+                        <input type="number" id="newCard" value="17428">
+                    </div>
+                    <div class="input-group">
+                        <label>دفع كاش (Cash Payment AED)</label>
+                        <input type="number" id="newCash" value="3860">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Renewals -->
+            <div>
+                <div class="section-title">🔄 تجديد الاشتراكات (Renewal)</div>
+                <div class="input-group">
+                    <label>عدد التجديدات (Renewal For Swimming)</label>
+                    <input type="number" id="renewalCount" value="15">
+                </div>
+            </div>
+
+            <!-- Swimming Cap & Accessories -->
+            <div>
+                <div class="section-title">🧢 مبيعات القبعات (Swimming Cap)</div>
+                <div class="grid-3">
+                    <div class="input-group">
+                        <label>العدد المباع</label>
+                        <input type="number" id="capCount" value="3">
+                    </div>
+                    <div class="input-group">
+                        <label>دفع بطاقة (CARD AED)</label>
+                        <input type="number" id="capCard" value="50">
+                    </div>
+                    <div class="input-group">
+                        <label>دفع كاش (Cash AED)</label>
+                        <input type="number" id="capCash" value="25">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Absences / Notes -->
+            <div>
+                <div class="section-title">⚠️ حالات الغياب والملاحظات</div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>اختر قالب جاهز (اختياري)</label>
+                        <select id="presetAbsence" onchange="applyPreset()">
+                            <option value="">-- اختر حالة جاهزة --</option>
+                            <option value="No absences today, everyone attended.">No absences today, everyone attended.</option>
+                            <option value="All coaches and students are present today.">All coaches and students are present today.</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>ملاحظات إضافية أو تفاصيل الغياب</label>
+                        <input type="text" id="absenceNotes" placeholder="اكتب ملاحظة أو اتركها فارغة" value="">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-secondary" onclick="resetForm()">تصفير الحقول</button>
+                <button class="btn btn-secondary" onclick="loadSampleData()">تعبئة بيانات تجريبية</button>
+            </div>
+        </div>
+
+        <!-- Sidebar Preview (Right) -->
+        <div class="preview-sidebar">
+            <div class="section-title" style="margin-top: 0;">📱 معاينة رسالة الواتساب</div>
+            <div class="preview-box" id="previewOutput">جاري التحميل...</div>
+            <div class="actions-bar">
+                <button class="btn" onclick="copyReport()">📋 نسخ التقرير</button>
+                <button class="btn" style="background-color: #25d366;" onclick="sendWhatsApp()">💬 فتح واتساب</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastMessage">تم نسخ التقرير بنجاح!</div>
+
+    <script>
+        function initApp() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reportDate').value = today;
+            setupListeners();
+            generateReport();
+        }
+
+        function setupListeners() {
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', generateReport);
+                input.addEventListener('change', generateReport);
+            });
+        }
+
+        function formatDate(dateStr) {
+            if(!dateStr) return "22/09/2026";
+            const parts = dateStr.split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function applyPreset() {
+            const val = document.getElementById('presetAbsence').value;
+            if (val) {
+                document.getElementById('absenceNotes').value = val;
+                generateReport();
+            }
+        }
+
+        function generateReport() {
+            const rawDate = document.getElementById('reportDate').value;
+            const formattedDate = formatDate(rawDate);
+            
+            const studentAttendance = parseInt(document.getElementById('studentAttendance').value) || 0;
+            const newRegCount = parseInt(document.getElementById('newRegCount').value) || 0;
+            const newCard = parseFloat(document.getElementById('newCard').value) || 0;
+            const newCash = parseFloat(document.getElementById('newCash').value) || 0;
+            const renewalCount = parseInt(document.getElementById('renewalCount').value) || 0;
+            
+            const capCount = parseInt(document.getElementById('capCount').value) || 0;
+            const capCard = parseFloat(document.getElementById('capCard').value) || 0;
+            const capCash = parseFloat(document.getElementById('capCash').value) || 0;
+
+            const absenceNotes = document.getElementById('absenceNotes').value.trim();
+
+            // Calculations
+            const totalCapsRevenue = capCard + capCash;
+            const totalIncome = newCard + newCash + capCard + capCash;
+
+            // Build Report strictly in English format with dots at the end of each paragraph/line
+            let report = `*📍 ISCS MUW | Swimming Academy*\n` +
+                         `🗓️ ${formattedDate}.\n`;
+
+            if (studentAttendance > 0) {
+                report += `\n✅ Total Student Attendance : *${studentAttendance}*.`;
+            }
+
+            if (newRegCount > 0) {
+                report += `\n\n📝 NEW SWIMMING REG : *${newRegCount}*.`;
+            }
+            if (newCard > 0) {
+                report += `\n💳 CARD Payment : *${newCard} AED*.`;
+            }
+            if (newCash > 0) {
+                report += `\n✅ CASH PAYMENT : *${newCash} AED*.`;
+            }
+            if (renewalCount > 0) {
+                report += `\n📝 RENEWAL FOR SWIMMING : *${renewalCount}*.`;
+            }
+
+            // Swimming caps section or automatic message if none sold
+            if (capCount > 0 || capCard > 0 || capCash > 0) {
+                report += `\n`;
+                if (capCount > 0) report += `\n📝 Swimming Cap : *${capCount}*.`;
+                if (capCard > 0) report += `\n💳 CARD : *${capCard} AED*.`;
+                if (capCash > 0) report += `\n💳 CASH : *${capCash} AED*.`;
+
+                if (totalCapsRevenue > 0) {
+                    report += `\n\nTOTAL CAPS : *${totalCapsRevenue} AED*.`;
+                }
+            } else {
+                report += `\n\n🚫 No swimming caps were sold today.`;
+            }
+
+            if (absenceNotes !== "") {
+                report += `\n\n⚠️ *Notes:* \n${absenceNotes}.`;
+            }
+
+            if (totalIncome > 0) {
+                report += `\n\nTotal Income today : *${totalIncome} AED*.`;
+            }
+
+            document.getElementById('previewOutput').innerText = report;
+        }
+
+        function loadSampleData() {
+            document.getElementById('studentAttendance').value = 45;
+            document.getElementById('newRegCount').value = 9;
+            document.getElementById('newCard').value = 17428;
+            document.getElementById('newCash').value = 3860;
+            document.getElementById('renewalCount').value = 15;
+            document.getElementById('capCount').value = 3;
+            document.getElementById('capCard').value = 50;
+            document.getElementById('capCash').value = 25;
+            document.getElementById('presetAbsence').value = "No absences today, everyone attended.";
+            document.getElementById('absenceNotes').value = "No absences today, everyone attended.";
+            generateReport();
+        }
+
+        function resetForm() {
+            document.getElementById('studentAttendance').value = 0;
+            document.getElementById('newRegCount').value = 0;
+            document.getElementById('newCard').value = 0;
+            document.getElementById('newCash').value = 0;
+            document.getElementById('renewalCount').value = 0;
+            document.getElementById('capCount').value = 0;
+            document.getElementById('capCard').value = 0;
+            document.getElementById('capCash').value = 0;
+            document.getElementById('presetAbsence').value = "";
+            document.getElementById('absenceNotes').value = "";
+            generateReport();
+        }
+
+        function copyReport() {
+            const text = document.getElementById('previewOutput').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toastMessage');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            });
+        }
+
+        function sendWhatsApp() {
+            const text = encodeURIComponent(document.getElementById('previewOutput').innerText);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
