@@ -3,119 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منظومة تقارير أكاديمية السباحة - ISCS MUW</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>Leaders — Offline Registration & Reporting System</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --border-color: #1f2937;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --success: #10b981;
-            --danger: #ef4444;
-            --radius: 10px;
-            --pill-radius: 9999px;
+            --bg-primary: #121212;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #222222;
+            --bg-input: #181818;
+            --border-color: #333333;
+            --border-light: #444444;
+
+            /* Monochromatic Dark Red / Burgundy Palette */
+            --primary: #8b0000;
+            --primary-dark: #660000;
+            --primary-hover: #a00000;
+            --accent-burgundy: #700018;
+
+            --text-main: #f0f0f0;
+            --text-muted: #a0a0a0;
+            --text-light: #cccccc;
+
+            --status-active: #8b0000;
+            --status-pending: #555555;
+            --status-completed: #222222;
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 10px;
+
+            --font-family: Arial, Tahoma, "Segoe UI", sans-serif;
+            --transition: all 0.2s ease-in-out;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', sans-serif;
+            font-family: var(--font-family);
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-primary);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            line-height: 1.5;
         }
 
+        /* Header */
         header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1.25rem 2rem;
+            background-color: var(--bg-secondary);
+            border-bottom: 2px solid var(--primary);
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        header h1 {
-            font-size: 1.25rem;
+        .brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand h1 {
+            font-size: 1.3rem;
             font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .brand .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            font-size: 0.85rem;
+        }
+
+        .badge-offline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background-color: var(--primary-dark);
+            color: #ffffff;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            border: 1px solid var(--primary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ff4d4d;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Layout */
+        .app-layout {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Navigation Sidebar */
+        nav.sidebar {
+            width: 250px;
+            background-color: var(--bg-secondary);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 0;
+            shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.85rem 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-right: 4px solid transparent;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            background-color: var(--bg-card);
             color: var(--text-main);
         }
 
-        header span {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+        .nav-item.active {
+            background-color: var(--bg-card);
+            color: #ffffff;
+            border-right-color: var(--primary);
         }
 
-        .main-container {
-            display: grid;
-            grid-template-columns: 1fr 420px;
-            gap: 1.5rem;
-            padding: 1.5rem;
-            max-width: 1600px;
-            margin: 0 auto;
-            width: 100%;
+        /* Main Content Container */
+        main.content {
             flex: 1;
-        }
-
-        @media (max-width: 1100px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .form-section {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
             padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            overflow-y: auto;
+            max-width: 1400px;
         }
 
-        .section-title {
-            font-size: 1.05rem;
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Cards & Section Containers */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            font-size: 1.1rem;
             font-weight: 700;
-            color: var(--accent);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
+        /* Grid Utilities */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .input-group {
+        /* Form Controls */
+        .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.35rem;
+            margin-bottom: 1rem;
         }
 
         label {
@@ -124,48 +205,66 @@
             color: var(--text-muted);
         }
 
-        input, select, textarea {
-            background-color: var(--bg-color);
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            background-color: var(--bg-input);
             border: 1px solid var(--border-color);
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             color: var(--text-main);
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: var(--transition);
+            width: 100%;
         }
 
         input:focus, select:focus, textarea:focus {
-            border-color: var(--accent);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.25);
+        }
+
+        input:disabled, select:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
         }
 
         .btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: var(--pill-radius);
-            padding: 0.75rem 1.5rem;
-            font-weight: 700;
+            background-color: var(--primary);
+            color: #ffffff;
+            border: 1px solid var(--primary-dark);
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 1.25rem;
             font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            text-decoration: none;
         }
 
         .btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn:active {
-            transform: scale(0.98);
+            background-color: var(--primary-hover);
         }
 
         .btn-secondary {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            border-color: var(--border-light);
             color: var(--text-main);
         }
 
@@ -173,318 +272,1822 @@
             background-color: var(--border-color);
         }
 
-        /* Sidebar Preview */
-        .preview-sidebar {
-            background-color: var(--card-bg);
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-danger {
+            background-color: #5a0000;
+            border-color: #800000;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background-color: #800000;
+        }
+
+        /* Table Design */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
             border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background-color: var(--bg-secondary);
+            color: var(--text-muted);
+            padding: 0.75rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.65rem 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        tr:hover {
+            background-color: rgba(139, 0, 0, 0.1);
+        }
+
+        /* Metrics Summary Cards */
+        .metric-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-right: 4px solid var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            position: sticky;
-            top: 1.5rem;
-            height: calc(100vh - 3rem);
+            gap: 0.25rem;
         }
 
-        .preview-box {
-            background-color: #075e54;
-            color: #ffffff;
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            font-family: monospace;
-            white-space: pre-wrap;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            flex: 1;
-            overflow-y: auto;
-            direction: ltr;
-            text-align: left;
-            border: 1px solid #128c7e;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-            margin-bottom: 1rem;
+        .metric-card .title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
         }
 
-        .actions-bar {
-            display: flex;
-            gap: 0.75rem;
+        .metric-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
-        .actions-bar .btn {
-            flex: 1;
-        }
-
+        /* Toast & Dialog */
         .toast {
             position: fixed;
             bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background-color: var(--success);
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: var(--pill-radius);
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            left: 2rem;
+            background-color: var(--primary-dark);
+            color: #ffffff;
+            border: 1px solid var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 9999;
+            transform: translateY(150%);
             transition: transform 0.3s ease;
-            z-index: 1000;
         }
 
         .toast.show {
-            transform: translateX(-50%) translateY(0);
+            transform: translateY(0);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .app-layout {
+                flex-direction: column;
+            }
+
+            nav.sidebar {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                border-left: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 0;
+            }
+
+            .nav-item {
+                padding: 0.75rem 1rem;
+                white-space: nowrap;
+                border-right: none;
+                border-bottom: 3px solid transparent;
+            }
+
+            .nav-item.active {
+                border-right-color: transparent;
+                border-bottom-color: var(--primary);
+            }
+
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- App Header -->
     <header>
-        <h1>ISCS MUW | Swimming Academy</h1>
-        <span>تقرير الإيرادات والحضور اليومي</span>
+        <div class="brand">
+            <h1>Leaders — Offline Registration & Reporting System</h1>
+            <span class="subtitle">Daily Registration, Records & Reports</span>
+        </div>
+        <div class="header-status">
+            <span class="badge-offline"><span class="status-dot"></span> OFFLINE MODE</span>
+            <div>تاريخ اليوم: <strong id="headerDate">--/--/----</strong></div>
+            <div>السجلات: <strong id="headerRecordCount">0</strong></div>
+        </div>
     </header>
 
-    <div class="main-container">
-        <!-- Forms Area -->
-        <div class="form-section">
-            <!-- General Info -->
-            <div>
-                <div class="section-title">📅 معلومات التقرير</div>
+    <!-- Main App Container -->
+    <div class="app-layout">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="nav-item active" onclick="switchTab('dashboard')">لوحة التحكم (Dashboard)</div>
+            <div class="nav-item" onclick="switchTab('registration')">التسجيل اليومي (Registration)</div>
+            <div class="nav-item" onclick="switchTab('whatsapp')">تقرير الواتساب (WhatsApp)</div>
+            <div class="nav-item" onclick="switchTab('excel')">تقرير أكسيل (Excel Report)</div>
+            <div class="nav-item" onclick="switchTab('records')">إدارة السجلات (Records)</div>
+            <div class="nav-item" onclick="switchTab('history')">سجل التقارير (Report History)</div>
+            <div class="nav-item" onclick="switchTab('backup')">النسخ الاحتياطي (Backup)</div>
+            <div class="nav-item" onclick="switchTab('settings')">الإعدادات (Settings)</div>
+        </nav>
+
+        <!-- Main Workspace -->
+        <main class="content">
+
+            <!-- 1. DASHBOARD TAB -->
+            <div id="tab-dashboard" class="tab-pane active">
+                <div class="card-header">📊 لوحة التحكم الإحصائية</div>
+                <div class="grid-4" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card">
+                        <span class="title">إجمالي التسجيلات</span>
+                        <span class="value" id="dashTotalRegs">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="title">تسجيلات اليوم</span>
+                        <span class="value" id="dashTodayRegs">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="title">نشط (Active)</span>
+                        <span class="value" id="dashActiveRegs">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="title">معلق (Pending)</span>
+                        <span class="value" id="dashPendingRegs">0</span>
+                    </div>
+                </div>
+
+                <div class="grid-4" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card">
+                        <span class="title">مكتمل (Completed)</span>
+                        <span class="value" id="dashCompletedRegs">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="title">تسجيل جديد</span>
+                        <span class="value" id="dashNewRegs">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="title">تجديدات (Renewals)</span>
+                        <span class="value" id="dashRenewalRegs">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="title">إجمالي الإيرادات</span>
+                        <span class="value" id="dashTotalRevenue">0 AED</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">📅 ملخص اليوم (Today's Summary)</div>
+                    <div class="grid-3">
+                        <div>
+                            <p><strong>تاريخ التقرير:</strong> <span id="dashTodayDate">--/--/----</span></p>
+                            <p><strong>عدد التسجيلات:</strong> <span id="dashTodayCount">0</span></p>
+                            <p><strong>إجمالي المقبوضات:</strong> <span id="dashTodayPayments">0 AED</span></p>
+                        </div>
+                        <div>
+                            <p><strong>طرق الدفع:</strong></p>
+                            <p>نقدي (Cash): <span id="dashTodayCash">0 AED</span></p>
+                            <p>بطاقة (Card): <span id="dashTodayCard">0 AED</span></p>
+                        </div>
+                        <div>
+                            <p><strong>أنواع المعاملات:</strong></p>
+                            <p>جديد: <span id="dashTodayNew">0</span> | تجديد: <span id="dashTodayRenew">0</span> | مبيعات: <span id="dashTodaySales">0</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. DAILY REGISTRATION TAB -->
+            <div id="tab-registration" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">📝 استمارة التسجيل اليومي</div>
+                    <form id="registrationForm" onsubmit="handleFormSubmit(event)">
+                        <input type="hidden" id="regTimestamp">
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>رقم التسجيل (Registration ID)</label>
+                                <input type="text" id="regId" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>اسم المشترك الكامل (Full Name) *</label>
+                                <input type="text" id="regFullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الهاتف (Phone Number)</label>
+                                <input type="tel" id="regPhone">
+                            </div>
+                        </div>
+
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>البريد الإلكتروني (Email)</label>
+                                <input type="email" id="regEmail">
+                            </div>
+                            <div class="form-group">
+                                <label>تاريخ التسجيل (Date)</label>
+                                <input type="date" id="regDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>الحالة (Status)</label>
+                                <select id="regStatus">
+                                    <option value="Active">Active (نشط)</option>
+                                    <option value="Pending">Pending (معلق)</option>
+                                    <option value="Completed">Completed (مكتمل)</option>
+                                    <option value="Suspended">Suspended (موقوف)</option>
+                                    <option value="Cancelled">Cancelled (ملغى)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>الفئة (Category)</label>
+                                <select id="regCategory">
+                                    <option value="New Registration">New Registration</option>
+                                    <option value="Renewal">Renewal</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>نوع المعاملة (Transaction Type)</label>
+                                <select id="regType">
+                                    <option value="New">New</option>
+                                    <option value="Renew">Renew</option>
+                                    <option value="Sales">Sales</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>موقع الفرع (Branch Location)</label>
+                                <input type="text" id="regBranch" value="ISCS MUW">
+                            </div>
+                        </div>
+
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>برنامج الأكاديمية (Academy Program)</label>
+                                <input type="text" id="regAcademy" value="Swimming Academy">
+                            </div>
+                            <div class="form-group">
+                                <label>البرنامج الخاص (Program)</label>
+                                <input type="text" id="regProgram" value="General Swimming">
+                            </div>
+                            <div class="form-group">
+                                <label>المبلغ المدفوع (Payment AED)</label>
+                                <input type="number" id="regPayment" step="0.01" value="0">
+                            </div>
+                        </div>
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>طريقة الدفع (Payment Method)</label>
+                                <select id="regPaymentMethod">
+                                    <option value="Cash">Cash (نقدي)</option>
+                                    <option value="Card">Card (بطاقة)</option>
+                                    <option value="Other">Other (أخرى)</option>
+                                    <option value="No Payment">No Payment (بدون دفع)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ملاحظات (Notes)</label>
+                                <input type="text" id="regNotes" placeholder="ملاحظات إضافية...">
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" id="btnSaveReg" class="btn">حفظ التسجيل (Save)</button>
+                            <button type="button" id="btnSaveAndNew" class="btn btn-outline" onclick="saveAndNewForm()">حفظ وجديد (Save & New)</button>
+                            <button type="button" id="btnCancelEdit" class="btn btn-secondary" style="display:none;" onclick="cancelEditForm()">إلغاء التعديل</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetRegForm()">تفرغ الحقول</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 3. WHATSAPP REPORT TAB -->
+            <div id="tab-whatsapp" class="tab-pane">
                 <div class="grid-2">
-                    <div class="input-group">
-                        <label>تاريخ التقرير</label>
-                        <input type="date" id="reportDate">
+                    <div class="card">
+                        <div class="card-header">📊 بيانات التقرير اليومي السريع</div>
+                        <div class="form-group">
+                            <label>تاريخ التقرير</label>
+                            <input type="date" id="wpDate" onchange="generateWhatsAppText()">
+                        </div>
+                        <div class="form-group">
+                            <label>إجمالي حضور الطلاب (Student Attendance)</label>
+                            <input type="number" id="wpAttendance" value="45" oninput="generateWhatsAppText()">
+                        </div>
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>عدد التسجيل الجديد</label>
+                                <input type="number" id="wpNewReg" value="9" oninput="generateWhatsAppText()">
+                            </div>
+                            <div class="form-group">
+                                <label>دفع بطاقة (Card AED)</label>
+                                <input type="number" id="wpNewCard" value="17428" oninput="generateWhatsAppText()">
+                            </div>
+                            <div class="form-group">
+                                <label>دفع كاش (Cash AED)</label>
+                                <input type="number" id="wpNewCash" value="3860" oninput="generateWhatsAppText()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>عدد التجديدات (Renewal Count)</label>
+                            <input type="number" id="wpRenewal" value="15" oninput="generateWhatsAppText()">
+                        </div>
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>عدد قبعات السباحة</label>
+                                <input type="number" id="wpCapCount" value="3" oninput="generateWhatsAppText()">
+                            </div>
+                            <div class="form-group">
+                                <label>قبعات - بطاقة AED</label>
+                                <input type="number" id="wpCapCard" value="50" oninput="generateWhatsAppText()">
+                            </div>
+                            <div class="form-group">
+                                <label>قبعات - كاش AED</label>
+                                <input type="number" id="wpCapCash" value="25" oninput="generateWhatsAppText()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>ملاحظات الغياب / تفاصيل إضافية</label>
+                            <textarea id="wpNotes" rows="3" oninput="generateWhatsAppText()" placeholder="أدخل أي ملاحظات...">No absences today, everyone attended.</textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn" onclick="saveDailyReportToHistory()">حفظ التقرير في السجل</button>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label>عدد حضور المشتركين اليوم (Total Student Attendance)</label>
-                        <input type="number" id="studentAttendance" value="45">
+
+                    <div class="card">
+                        <div class="card-header">📱 معاينة التقرير (WhatsApp Format)</div>
+                        <div id="whatsappPreview" style="background-color: var(--bg-input); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-sm); font-family: monospace; white-space: pre-wrap; font-size: 0.85rem; min-height: 250px; direction: ltr; text-align: left;">
+                        </div>
+                        <div class="btn-group" style="margin-top: 1rem;">
+                            <button class="btn" onclick="copyWhatsAppReport()">📋 نسخ التقرير</button>
+                            <button class="btn btn-outline" onclick="openWhatsApp()">💬 فتح واتساب</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- New Registration -->
-            <div>
-                <div class="section-title">📝 التسجيلات الجديدة (New Swimming Reg)</div>
-                <div class="grid-3">
-                    <div class="input-group">
-                        <label>عدد التسجيلات الجديدة</label>
-                        <input type="number" id="newRegCount" value="9">
+            <!-- 4. EXCEL REPORT TAB -->
+            <div id="tab-excel" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">📗 تصدير تقرير أكسيل الاحترافي (.xlsx)</div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">
+                        قم بتوليد وتنزيل ملف أكسيل تنسيقي متكامل يحتوي على ملخص التقرير وجدول التسجيلات المحدث offline بدون الحاجة لاتصال بالإنترنت.
+                    </p>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>نطاق التقرير (Report Range)</label>
+                            <select id="excelRangeType" onchange="toggleExcelDateInputs()">
+                                <option value="today">تقرير اليوم (Today's Report)</option>
+                                <option value="selected">تاريخ محدد (Selected Date)</option>
+                                <option value="range">نطاق تواريخ (Date Range)</option>
+                                <option value="all">جميع السجلات (All Records)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="excelSingleDateGroup">
+                            <label>التاريخ المحدد</label>
+                            <input type="date" id="excelSingleDate">
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label>دفع بطاقة (CARD Payment AED)</label>
-                        <input type="number" id="newCard" value="17428">
+                    <div class="grid-2" id="excelRangeGroup" style="display:none;">
+                        <div class="form-group">
+                            <label>من تاريخ</label>
+                            <input type="date" id="excelStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label>إلى تاريخ</label>
+                            <input type="date" id="excelEndDate">
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label>دفع كاش (Cash Payment AED)</label>
-                        <input type="number" id="newCash" value="3860">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Renewals -->
-            <div>
-                <div class="section-title">🔄 تجديد الاشتراكات (Renewal)</div>
-                <div class="input-group">
-                    <label>عدد التجديدات (Renewal For Swimming)</label>
-                    <input type="number" id="renewalCount" value="15">
-                </div>
-            </div>
-
-            <!-- Swimming Cap & Accessories -->
-            <div>
-                <div class="section-title">🧢 مبيعات القبعات (Swimming Cap)</div>
-                <div class="grid-3">
-                    <div class="input-group">
-                        <label>العدد المباع</label>
-                        <input type="number" id="capCount" value="3">
-                    </div>
-                    <div class="input-group">
-                        <label>دفع بطاقة (CARD AED)</label>
-                        <input type="number" id="capCard" value="50">
-                    </div>
-                    <div class="input-group">
-                        <label>دفع كاش (Cash AED)</label>
-                        <input type="number" id="capCash" value="25">
+                    <div class="btn-group">
+                        <button class="btn" onclick="exportProfessionalExcel()">📥 إنشاء وتنزيل ملف Excel</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Absences / Notes -->
-            <div>
-                <div class="section-title">⚠️ حالات الغياب والملاحظات</div>
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>اختر قالب جاهز (اختياري)</label>
-                        <select id="presetAbsence" onchange="applyPreset()">
-                            <option value="">-- اختر حالة جاهزة --</option>
-                            <option value="No absences today, everyone attended.">No absences today, everyone attended.</option>
-                            <option value="All coaches and students are present today.">All coaches and students are present today.</option>
-                        </select>
+            <!-- 5. RECORDS MANAGEMENT TAB -->
+            <div id="tab-records" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">📂 إدارة وتصفية السجلات</div>
+                    <div class="grid-3" style="margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label>بحث (اسم، ID، هاتف، بريد)</label>
+                            <input type="text" id="recSearch" placeholder="ابحث هنا..." oninput="filterRecordsTable()">
+                        </div>
+                        <div class="form-group">
+                            <label>تصفية بالحالة (Status)</label>
+                            <select id="recFilterStatus" onchange="filterRecordsTable()">
+                                <option value="">الكل</option>
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Suspended">Suspended</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>تصفية بالفئة (Category)</label>
+                            <select id="recFilterCategory" onchange="filterRecordsTable()">
+                                <option value="">الكل</option>
+                                <option value="New Registration">New Registration</option>
+                                <option value="Renewal">Renewal</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label>ملاحظات إضافية أو تفاصيل الغياب</label>
-                        <input type="text" id="absenceNotes" placeholder="اكتب ملاحظة أو اتركها فارغة" value="">
+                    <div class="grid-3" style="margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label>طريقة الدفع</label>
+                            <select id="recFilterMethod" onchange="filterRecordsTable()">
+                                <option value="">الكل</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Card">Card</option>
+                                <option value="Other">Other</option>
+                                <option value="No Payment">No Payment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الفرع</label>
+                            <input type="text" id="recFilterBranch" placeholder="الفرع..." oninput="filterRecordsTable()">
+                        </div>
+                        <div class="form-group">
+                            <label>الترتيب حسب</label>
+                            <select id="recSortBy" onchange="filterRecordsTable()">
+                                <option value="date-desc">التاريخ (الأحدث أولاً)</option>
+                                <option value="date-asc">التاريخ (الأقدم أولاً)</option>
+                                <option value="id-desc">الرقم (الأعلى أولاً)</option>
+                                <option value="id-asc">الرقم (الأصغر أولاً)</option>
+                                <option value="name-asc">الاسم (أ - ي)</option>
+                                <option value="payment-desc">المبلغ (الأعلى أولاً)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>التاريخ</th>
+                                    <th>الاسم</th>
+                                    <th>الهاتف</th>
+                                    <th>الفرع</th>
+                                    <th>البرنامج</th>
+                                    <th>النوع</th>
+                                    <th>المبلغ</th>
+                                    <th>طريقة الدفع</th>
+                                    <th>الحالة</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recordsTableBody">
+                                <tr><td colspan="11" style="text-align:center;">لا توجد سجلات حالياً</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Action Controls -->
-            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                <button class="btn btn-secondary" onclick="resetForm()">تصفير الحقول</button>
-                <button class="btn btn-secondary" onclick="loadSampleData()">تعبئة بيانات تجريبية</button>
+            <!-- 6. REPORT HISTORY TAB -->
+            <div id="tab-history" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">📜 سجل التقارير اليومية المحفوظة</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID التقرير</th>
+                                    <th>تاريخ التقرير</th>
+                                    <th>وقت الإنشاء</th>
+                                    <th>التسجيلات</th>
+                                    <th>الإيراد الإجمالي</th>
+                                    <th>الجديد</th>
+                                    <th>التجديدات</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <tr><td colspan="8" style="text-align:center;">لا توجد تقارير محفوظة</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Sidebar Preview (Right) -->
-        <div class="preview-sidebar">
-            <div class="section-title" style="margin-top: 0;">📱 معاينة رسالة الواتساب</div>
-            <div class="preview-box" id="previewOutput">جاري التحميل...</div>
-            <div class="actions-bar">
-                <button class="btn" onclick="copyReport()">📋 نسخ التقرير</button>
-                <button class="btn" style="background-color: #25d366;" onclick="sendWhatsApp()">💬 فتح واتساب</button>
+            <!-- 7. BACKUP & RESTORE TAB -->
+            <div id="tab-backup" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">💾 النسخ الاحتياطي واستعادة البيانات</div>
+                    <div class="grid-2">
+                        <div>
+                            <h3>تصدير نسخة احتياطية (Export JSON)</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                                قم بتنزيل ملف JSON شامل يحتوي على كل السجلات، والتقارير اليومية، والإعدادات.
+                            </p>
+                            <div class="btn-group">
+                                <button class="btn" onclick="exportFullBackup()">📥 تصدير النسخة الاحتياطية</button>
+                                <button class="btn btn-outline" onclick="chooseLocalDirectoryBackup()">📁 اختيار مجلد حفظ مخصص (File API)</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>استعادة نسخة احتياطية (Restore JSON)</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                                حدد ملف backup JSON من جهازك لاسترجاع البيانات.
+                            </p>
+                            <input type="file" id="backupFileInput" accept=".json" style="margin-top: 0.5rem;">
+                            <div class="btn-group">
+                                <button class="btn btn-secondary" onclick="processBackupRestore('merge')">دمج مع البيانات الحالية (Merge)</button>
+                                <button class="btn btn-danger" onclick="processBackupRestore('replace')">استبدال كافة البيانات (Replace)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <!-- 8. SETTINGS TAB -->
+            <div id="tab-settings" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">⚙️ إعدادات النظام</div>
+                    <form id="settingsForm" onsubmit="saveSettingsForm(event)">
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>اسم الأكاديمية (Academy Name)</label>
+                                <input type="text" id="setAcademyName">
+                            </div>
+                            <div class="form-group">
+                                <label>الفرع الافتراضي (Default Branch)</label>
+                                <input type="text" id="setDefaultBranch">
+                            </div>
+                            <div class="form-group">
+                                <label>البرنامج الافتراضي (Default Program)</label>
+                                <input type="text" id="setDefaultProgram">
+                            </div>
+                        </div>
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>العملة الافتراضية (Currency)</label>
+                                <input type="text" id="setDefaultCurrency" value="AED">
+                            </div>
+                            <div class="form-group">
+                                <label>بادئة رقم التسجيل (ID Prefix)</label>
+                                <input type="text" id="setIdPrefix" value="REG-">
+                            </div>
+                            <div class="form-group">
+                                <label>سماح بتعديل ID التسجيل يدويًا</label>
+                                <select id="setAllowManualId">
+                                    <option value="false">لا (مستحسن)</option>
+                                    <option value="true">نعم</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn">حفظ الإعدادات</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card" style="border-color: #555;">
+                    <div class="card-header">🛠️ خيارات المطور والاختبار</div>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                        يمكنك إضافة بيانات تجريبية لأغراض التقييم والاختبار. لن تعمل هذه الخيارات تلقائياً مطلقاً.
+                    </p>
+                    <button class="btn btn-outline" onclick="loadDeveloperTestData()">Developer Test Data (إضافة بيانات اختباريّة)</button>
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    <div class="toast" id="toastMessage">تم نسخ التقرير بنجاح!</div>
+    <!-- Toast Notification Container -->
+    <div class="toast" id="toastMessage">تمت العملية بنجاح</div>
 
     <script>
-        function initApp() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('reportDate').value = today;
-            setupListeners();
-            generateReport();
-        }
+        // IndexedDB Storage Engine
+        const DB_NAME = 'LeadersDB';
+        const DB_VERSION = 1;
+        let dbInstance = null;
 
-        function setupListeners() {
-            const inputs = document.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('input', generateReport);
-                input.addEventListener('change', generateReport);
-            });
-        }
-
-        function formatDate(dateStr) {
-            if(!dateStr) return "22/09/2026";
-            const parts = dateStr.split('-');
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
-
-        function applyPreset() {
-            const val = document.getElementById('presetAbsence').value;
-            if (val) {
-                document.getElementById('absenceNotes').value = val;
-                generateReport();
-            }
-        }
-
-        function generateReport() {
-            const rawDate = document.getElementById('reportDate').value;
-            const formattedDate = formatDate(rawDate);
-            
-            const studentAttendance = parseInt(document.getElementById('studentAttendance').value) || 0;
-            const newRegCount = parseInt(document.getElementById('newRegCount').value) || 0;
-            const newCard = parseFloat(document.getElementById('newCard').value) || 0;
-            const newCash = parseFloat(document.getElementById('newCash').value) || 0;
-            const renewalCount = parseInt(document.getElementById('renewalCount').value) || 0;
-            
-            const capCount = parseInt(document.getElementById('capCount').value) || 0;
-            const capCard = parseFloat(document.getElementById('capCard').value) || 0;
-            const capCash = parseFloat(document.getElementById('capCash').value) || 0;
-
-            const absenceNotes = document.getElementById('absenceNotes').value.trim();
-
-            // Calculations
-            const totalCapsRevenue = capCard + capCash;
-            const totalIncome = newCard + newCash + capCard + capCash;
-
-            // Build Report strictly in English format with dots at the end of each paragraph/line
-            let report = `*📍 ISCS MUW | Swimming Academy*\n` +
-                         `🗓️ ${formattedDate}.\n`;
-
-            if (studentAttendance > 0) {
-                report += `\n✅ Total Student Attendance : *${studentAttendance}*.`;
-            }
-
-            if (newRegCount > 0) {
-                report += `\n\n📝 NEW SWIMMING REG : *${newRegCount}*.`;
-            }
-            if (newCard > 0) {
-                report += `\n💳 CARD Payment : *${newCard} AED*.`;
-            }
-            if (newCash > 0) {
-                report += `\n✅ CASH PAYMENT : *${newCash} AED*.`;
-            }
-            if (renewalCount > 0) {
-                report += `\n📝 RENEWAL FOR SWIMMING : *${renewalCount}*.`;
-            }
-
-            // Swimming caps section or automatic message if none sold
-            if (capCount > 0 || capCard > 0 || capCash > 0) {
-                report += `\n`;
-                if (capCount > 0) report += `\n📝 Swimming Cap : *${capCount}*.`;
-                if (capCard > 0) report += `\n💳 CARD : *${capCard} AED*.`;
-                if (capCash > 0) report += `\n💳 CASH : *${capCash} AED*.`;
-
-                if (totalCapsRevenue > 0) {
-                    report += `\n\nTOTAL CAPS : *${totalCapsRevenue} AED*.`;
+        function openDatabase() {
+            return new Promise((resolve, reject) => {
+                if (dbInstance) {
+                    resolve(dbInstance);
+                    return;
                 }
-            } else {
-                report += `\n\n🚫 No swimming caps were sold today.`;
-            }
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-            if (absenceNotes !== "") {
-                report += `\n\n⚠️ *Notes:* \n${absenceNotes}.`;
-            }
+                request.onupgradeneeded = function (e) {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains('registrations')) {
+                        db.createObjectStore('registrations', { keyPath: 'id' });
+                    }
+                    if (!db.objectStoreNames.contains('daily_reports')) {
+                        db.createObjectStore('daily_reports', { keyPath: 'id' });
+                    }
+                    if (!db.objectStoreNames.contains('report_history')) {
+                        db.createObjectStore('report_history', { keyPath: 'id' });
+                    }
+                    if (!db.objectStoreNames.contains('settings')) {
+                        db.createObjectStore('settings', { keyPath: 'key' });
+                    }
+                    if (!db.objectStoreNames.contains('counters')) {
+                        db.createObjectStore('counters', { keyPath: 'key' });
+                    }
+                };
 
-            if (totalIncome > 0) {
-                report += `\n\nTotal Income today : *${totalIncome} AED*.`;
-            }
+                request.onsuccess = function (e) {
+                    dbInstance = e.target.result;
+                    resolve(dbInstance);
+                };
 
-            document.getElementById('previewOutput').innerText = report;
-        }
-
-        function loadSampleData() {
-            document.getElementById('studentAttendance').value = 45;
-            document.getElementById('newRegCount').value = 9;
-            document.getElementById('newCard').value = 17428;
-            document.getElementById('newCash').value = 3860;
-            document.getElementById('renewalCount').value = 15;
-            document.getElementById('capCount').value = 3;
-            document.getElementById('capCard').value = 50;
-            document.getElementById('capCash').value = 25;
-            document.getElementById('presetAbsence').value = "No absences today, everyone attended.";
-            document.getElementById('absenceNotes').value = "No absences today, everyone attended.";
-            generateReport();
-        }
-
-        function resetForm() {
-            document.getElementById('studentAttendance').value = 0;
-            document.getElementById('newRegCount').value = 0;
-            document.getElementById('newCard').value = 0;
-            document.getElementById('newCash').value = 0;
-            document.getElementById('renewalCount').value = 0;
-            document.getElementById('capCount').value = 0;
-            document.getElementById('capCard').value = 0;
-            document.getElementById('capCash').value = 0;
-            document.getElementById('presetAbsence').value = "";
-            document.getElementById('absenceNotes').value = "";
-            generateReport();
-        }
-
-        function copyReport() {
-            const text = document.getElementById('previewOutput').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toastMessage');
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 2500);
+                request.onerror = function (e) {
+                    console.error('IndexedDB Error:', e.target.error);
+                    reject(e.target.error);
+                };
             });
         }
 
-        function sendWhatsApp() {
-            const text = encodeURIComponent(document.getElementById('previewOutput').innerText);
+        async function dbGet(storeName, key) {
+            const db = await openDatabase();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readonly');
+                const store = tx.objectStore(storeName);
+                const req = store.get(key);
+                req.onsuccess = () => resolve(req.result || null);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function dbGetAll(storeName) {
+            const db = await openDatabase();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readonly');
+                const store = tx.objectStore(storeName);
+                const req = store.getAll();
+                req.onsuccess = () => resolve(req.result || []);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function dbPut(storeName, item) {
+            const db = await openDatabase();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readwrite');
+                const store = tx.objectStore(storeName);
+                const req = store.put(item);
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function dbDelete(storeName, key) {
+            const db = await openDatabase();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readwrite');
+                const store = tx.objectStore(storeName);
+                const req = store.delete(key);
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function dbClear(storeName) {
+            const db = await openDatabase();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readwrite');
+                const store = tx.objectStore(storeName);
+                const req = store.clear();
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        // Sequence Counter Logic
+        async function getNextRegistrationId() {
+            const settings = await getSettings();
+            const prefix = settings.idPrefix || 'REG-';
+            const counterObj = await dbGet('counters', 'registration_seq');
+            let seq = counterObj ? counterObj.lastValue : 0;
+            seq += 1;
+            await dbPut('counters', { key: 'registration_seq', lastValue: seq });
+            const paddedNumber = String(seq).padStart(6, '0');
+            return `${prefix}${paddedNumber}`;
+        }
+
+        // Settings Management
+        const DEFAULT_SETTINGS = {
+            key: 'app_config',
+            academyName: 'ISCS MUW',
+            defaultBranch: 'ISCS MUW',
+            defaultProgram: 'General Swimming',
+            defaultCurrency: 'AED',
+            idPrefix: 'REG-',
+            allowManualId: 'false'
+        };
+
+        async function getSettings() {
+            const stored = await dbGet('settings', 'app_config');
+            return stored ? { ...DEFAULT_SETTINGS, ...stored } : DEFAULT_SETTINGS;
+        }
+
+        async function saveSettings(settingsObj) {
+            await dbPut('settings', { ...DEFAULT_SETTINGS, ...settingsObj, key: 'app_config' });
+        }
+
+        // CRC-32 & Pure JS Zip Generator for XLSX Export
+        function crc32(strOrUint8) {
+            let c;
+            let crc = 0 ^ (-1);
+            const table = [];
+            for (let n = 0; n < 256; n++) {
+                c = n;
+                for (let k = 0; k < 8; k++) {
+                    c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+                }
+                table[n] = c;
+            }
+            const buf = typeof strOrUint8 === 'string' ? new TextEncoder().encode(strOrUint8) : strOrUint8;
+            for (let i = 0; i < buf.length; i++) {
+                crc = (crc >>> 8) ^ table[(crc ^ buf[i]) & 0xFF];
+            }
+            return (crc ^ (-1)) >>> 0;
+        }
+
+        class SimpleZip {
+            constructor() {
+                this.files = [];
+            }
+
+            addFile(filename, content) {
+                const data = typeof content === 'string' ? new TextEncoder().encode(content) : content;
+                const crc = crc32(data);
+                this.files.push({
+                    filename: filename,
+                    filenameBytes: new TextEncoder().encode(filename),
+                    data: data,
+                    crc: crc,
+                    size: data.length
+                });
+            }
+
+            toUint8Array() {
+                let totalSize = 0;
+
+                for (const file of this.files) {
+                    file.offset = totalSize;
+                    const headerSize = 30 + file.filenameBytes.length;
+                    totalSize += headerSize + file.size;
+                }
+
+                const cdOffset = totalSize;
+                let cdSize = 0;
+
+                for (const file of this.files) {
+                    const cdHeaderSize = 46 + file.filenameBytes.length;
+                    cdSize += cdHeaderSize;
+                }
+
+                totalSize += cdSize + 22; // + EOCD
+
+                const buf = new Uint8Array(totalSize);
+                const view = new DataView(buf.buffer);
+                let pos = 0;
+
+                // Write Local File Headers and Data
+                for (const file of this.files) {
+                    view.setUint32(pos, 0x04034b50, true); // Local header signature
+                    view.setUint16(pos + 4, 20, true);
+                    view.setUint16(pos + 6, 0, true);
+                    view.setUint16(pos + 8, 0, true); // Method: Store
+                    view.setUint16(pos + 10, 0, true);
+                    view.setUint16(pos + 12, 0, true);
+                    view.setUint32(pos + 14, file.crc, true);
+                    view.setUint32(pos + 18, file.size, true);
+                    view.setUint32(pos + 22, file.size, true);
+                    view.setUint16(pos + 26, file.filenameBytes.length, true);
+                    view.setUint16(pos + 28, 0, true);
+                    pos += 30;
+
+                    buf.set(file.filenameBytes, pos);
+                    pos += file.filenameBytes.length;
+
+                    buf.set(file.data, pos);
+                    pos += file.size;
+                }
+
+                // Write Central Directory Headers
+                for (const file of this.files) {
+                    view.setUint32(pos, 0x02014b50, true); // Central Directory signature
+                    view.setUint16(pos + 4, 20, true);
+                    view.setUint16(pos + 6, 20, true);
+                    view.setUint16(pos + 8, 0, true);
+                    view.setUint16(pos + 10, 0, true);
+                    view.setUint16(pos + 12, 0, true);
+                    view.setUint16(pos + 14, 0, true);
+                    view.setUint32(pos + 16, file.crc, true);
+                    view.setUint32(pos + 20, file.size, true);
+                    view.setUint32(pos + 24, file.size, true);
+                    view.setUint16(pos + 28, file.filenameBytes.length, true);
+                    view.setUint16(pos + 30, 0, true);
+                    view.setUint16(pos + 32, 0, true);
+                    view.setUint16(pos + 34, 0, true);
+                    view.setUint16(pos + 36, 0, true);
+                    view.setUint32(pos + 38, 0, true);
+                    view.setUint32(pos + 42, file.offset, true);
+                    pos += 46;
+
+                    buf.set(file.filenameBytes, pos);
+                    pos += file.filenameBytes.length;
+                }
+
+                // Write End of Central Directory Record (EOCD)
+                view.setUint32(pos, 0x06054b50, true);
+                view.setUint16(pos + 4, 0, true);
+                view.setUint16(pos + 6, 0, true);
+                view.setUint16(pos + 8, this.files.length, true);
+                view.setUint16(pos + 10, this.files.length, true);
+                view.setUint32(pos + 12, cdSize, true);
+                view.setUint32(pos + 16, cdOffset, true);
+                view.setUint16(pos + 20, 0, true);
+
+                return buf;
+            }
+        }
+
+        // Helper to escape XML strings
+        function escapeXml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
+        }
+
+        // OpenXML XLSX Builder Function
+        function buildExcelWorkbook(records, reportTitle, reportDate) {
+            const zip = new SimpleZip();
+
+            zip.addFile("[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+  <Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
+</Types>`);
+
+            zip.addFile("_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`);
+
+            zip.addFile("xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`);
+
+            zip.addFile("xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <sheets>
+    <sheet name="Daily Registration Report" sheetId="1" r:id="rId1"/>
+  </sheets>
+</workbook>`);
+
+            // Styles XML: dark-red burgundy header (#8b0000), bold fonts, borders, numeric formatting
+            zip.addFile("xl/styles.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <numFmts count="1">
+    <numFmt numFmtId="164" formatCode="#,##0.00 &quot;AED&quot;"/>
+  </numFmts>
+  <fonts count="4">
+    <font><sz val="10"/><name val="Segoe UI"/></font>
+    <font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Segoe UI"/></font>
+    <font><b/><sz val="14"/><color rgb="8B0000"/><name val="Segoe UI"/></font>
+    <font><b/><sz val="10"/><color rgb="000000"/><name val="Segoe UI"/></font>
+  </fonts>
+  <fills count="3">
+    <fill><patternFill patternType="none"/></fill>
+    <fill><patternFill patternType="gray125"/></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="8B0000"/></patternFill></fill>
+  </fills>
+  <borders count="2">
+    <border><left/><right/><top/><bottom/></border>
+    <border>
+      <left style="thin"><color rgb="CCCCCC"/></left>
+      <right style="thin"><color rgb="CCCCCC"/></right>
+      <top style="thin"><color rgb="CCCCCC"/></top>
+      <bottom style="thin"><color rgb="CCCCCC"/></bottom>
+    </border>
+  </borders>
+  <cellStyleXfs count="1">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>
+  </cellStyleXfs>
+  <cellXfs count="6">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/> <!-- 0: default -->
+    <xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0"/> <!-- 1: title bold dark red -->
+    <xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/> <!-- 2: header burgundy -->
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"/> <!-- 3: body data cell -->
+    <xf numFmtId="164" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"/> <!-- 4: currency AED -->
+    <xf numFmtId="0" fontId="3" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"/> <!-- 5: summary total bold -->
+  </cellXfs>
+</styleSheet>`);
+
+            // Compute summary metrics
+            let totalRegs = records.length;
+            let totalNew = records.filter(r => r.type === 'New' || r.category === 'New Registration').length;
+            let totalRenew = records.filter(r => r.type === 'Renew' || r.category === 'Renewal').length;
+            let totalSales = records.filter(r => r.type === 'Sales' || r.category === 'Sales').length;
+            let totalRevenue = records.reduce((sum, r) => sum + (parseFloat(r.payment) || 0), 0);
+            let nowTimestamp = new Date().toLocaleString('en-GB');
+
+            // Columns definition
+            const headers = [
+                "Date", "Registration ID", "Full Name", "Email", "Phone Number",
+                "Branch Location", "Academy Program", "Program", "Transaction Type",
+                "Status", "Category", "Payment (AED)", "Payment Method",
+                "Registration Timestamp", "Notes"
+            ];
+
+            let rowsXml = '';
+
+            // Row 1: Title
+            rowsXml += `<row r="1"><c r="A1" t="inlineStr" s="1"><is><t>${escapeXml(reportTitle || 'LEADERS — DAILY REGISTRATION REPORT')}</t></is></c></row>\n`;
+            // Row 2: Subtitle / Date
+            rowsXml += `<row r="2"><c r="A2" t="inlineStr" s="0"><is><t>Report Date: ${escapeXml(reportDate || 'All Time')} | Generated: ${escapeXml(nowTimestamp)}</t></is></c></row>\n`;
+
+            // Row 4-8: Summary Box
+            rowsXml += `<row r="4"><c r="A4" t="inlineStr" s="5"><is><t>Metric</t></is></c><c r="B4" t="inlineStr" s="5"><is><t>Value</t></is></c></row>\n`;
+            rowsXml += `<row r="5"><c r="A5" t="inlineStr" s="3"><is><t>Total Registrations</t></is></c><c r="B5" s="3"><v>${totalRegs}</v></c></row>\n`;
+            rowsXml += `<row r="6"><c r="A6" t="inlineStr" s="3"><is><t>New Registrations</t></is></c><c r="B6" s="3"><v>${totalNew}</v></c></row>\n`;
+            rowsXml += `<row r="7"><c r="A7" t="inlineStr" s="3"><is><t>Renewals</t></is></c><c r="B7" s="3"><v>${totalRenew}</v></c></row>\n`;
+            rowsXml += `<row r="8"><c r="A8" t="inlineStr" s="3"><is><t>Sales</t></is></c><c r="B8" s="3"><v>${totalSales}</v></c></row>\n`;
+            rowsXml += `<row r="9"><c r="A9" t="inlineStr" s="5"><is><t>Total Revenue</t></is></c><c r="B9" s="4"><v>${totalRevenue.toFixed(2)}</v></c></row>\n`;
+
+            // Row 11: Table Header Row
+            const colLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"];
+            rowsXml += `<row r="11">\n`;
+            headers.forEach((h, idx) => {
+                const cellRef = `${colLetters[idx]}11`;
+                rowsXml += `  <c r="${cellRef}" t="inlineStr" s="2"><is><t>${escapeXml(h)}</t></is></c>\n`;
+            });
+            rowsXml += `</row>\n`;
+
+            // Row 12+: Data Rows
+            let startRow = 12;
+            records.forEach((r, idx) => {
+                const rNum = startRow + idx;
+                const payVal = parseFloat(r.payment) || 0;
+                rowsXml += `<row r="${rNum}">
+  <c r="A${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.date)}</t></is></c>
+  <c r="B${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.id)}</t></is></c>
+  <c r="C${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.fullName)}</t></is></c>
+  <c r="D${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.email)}</t></is></c>
+  <c r="E${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.phone)}</t></is></c>
+  <c r="F${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.branch)}</t></is></c>
+  <c r="G${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.academy)}</t></is></c>
+  <c r="H${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.program)}</t></is></c>
+  <c r="I${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.type)}</t></is></c>
+  <c r="J${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.status)}</t></is></c>
+  <c r="K${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.category)}</t></is></c>
+  <c r="L${rNum}" s="4"><v>${payVal.toFixed(2)}</v></c>
+  <c r="M${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.paymentMethod)}</t></is></c>
+  <c r="N${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.timestamp)}</t></is></c>
+  <c r="O${rNum}" t="inlineStr" s="3"><is><t>${escapeXml(r.notes)}</t></is></c>
+</row>\n`;
+            });
+
+            // Total summary row at bottom
+            const totalRowIndex = startRow + records.length;
+            rowsXml += `<row r="${totalRowIndex}">
+  <c r="A${totalRowIndex}" t="inlineStr" s="5"><is><t>TOTALS</t></is></c>
+  <c r="B${totalRowIndex}" t="inlineStr" s="5"><is><t>Records: ${totalRegs}</t></is></c>
+  <c r="C${totalRowIndex}" s="3"/>
+  <c r="D${totalRowIndex}" s="3"/>
+  <c r="E${totalRowIndex}" s="3"/>
+  <c r="F${totalRowIndex}" s="3"/>
+  <c r="G${totalRowIndex}" s="3"/>
+  <c r="H${totalRowIndex}" s="3"/>
+  <c r="I${totalRowIndex}" s="3"/>
+  <c r="J${totalRowIndex}" s="3"/>
+  <c r="K${totalRowIndex}" s="3"/>
+  <c r="L${totalRowIndex}" s="4"><v>${totalRevenue.toFixed(2)}</v></c>
+  <c r="M${totalRowIndex}" s="3"/>
+  <c r="N${totalRowIndex}" s="3"/>
+  <c r="O${totalRowIndex}" s="3"/>
+</row>\n`;
+
+            const colsXml = `<cols>
+  <col min="1" max="1" width="14" customWidth="1"/>
+  <col min="2" max="2" width="16" customWidth="1"/>
+  <col min="3" max="3" width="22" customWidth="1"/>
+  <col min="4" max="4" width="22" customWidth="1"/>
+  <col min="5" max="5" width="16" customWidth="1"/>
+  <col min="6" max="6" width="16" customWidth="1"/>
+  <col min="7" max="7" width="20" customWidth="1"/>
+  <col min="8" max="8" width="20" customWidth="1"/>
+  <col min="9" max="9" width="16" customWidth="1"/>
+  <col min="10" max="10" width="12" customWidth="1"/>
+  <col min="11" max="11" width="18" customWidth="1"/>
+  <col min="12" max="12" width="16" customWidth="1"/>
+  <col min="13" max="13" width="16" customWidth="1"/>
+  <col min="14" max="14" width="22" customWidth="1"/>
+  <col min="15" max="15" width="25" customWidth="1"/>
+</cols>`;
+
+            zip.addFile("xl/worksheets/sheet1.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  ${colsXml}
+  <sheetData>
+    ${rowsXml}
+  </sheetData>
+</worksheet>`);
+
+            return zip.toUint8Array();
+        }
+
+        // Helper Functions & Utilities
+        function getTodayIsoDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function formatDisplayDate(isoDateStr) {
+            if (!isoDateStr) return '';
+            const parts = isoDateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return isoDateStr;
+        }
+
+        function formatTimestamp(dateObj) {
+            const d = dateObj || new Date();
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
+        function downloadBlob(uint8ArrayOrBlob, fileName, mimeType) {
+            const blob = uint8ArrayOrBlob instanceof Blob
+                ? uint8ArrayOrBlob
+                : new Blob([uint8ArrayOrBlob], { type: mimeType || 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        // Global Application Controller & State
+        let currentEditRegId = null;
+
+        async function initApp() {
+            const todayIso = getTodayIsoDate();
+            document.getElementById('headerDate').innerText = formatDisplayDate(todayIso);
+
+            // Populate forms initial values
+            document.getElementById('regDate').value = todayIso;
+            document.getElementById('wpDate').value = todayIso;
+            document.getElementById('excelSingleDate').value = todayIso;
+            document.getElementById('excelStartDate').value = todayIso;
+            document.getElementById('excelEndDate').value = todayIso;
+
+            // Load Settings into form
+            const settings = await getSettings();
+            document.getElementById('setAcademyName').value = settings.academyName;
+            document.getElementById('setDefaultBranch').value = settings.defaultBranch;
+            document.getElementById('setDefaultProgram').value = settings.defaultProgram;
+            document.getElementById('setDefaultCurrency').value = settings.defaultCurrency;
+            document.getElementById('setIdPrefix').value = settings.idPrefix;
+            document.getElementById('setAllowManualId').value = settings.allowManualId;
+
+            // Apply defaults to Registration Form
+            document.getElementById('regBranch').value = settings.defaultBranch;
+            document.getElementById('regAcademy').value = settings.academyName;
+            document.getElementById('regProgram').value = settings.defaultProgram;
+
+            if (settings.allowManualId === 'true') {
+                document.getElementById('regId').removeAttribute('readonly');
+            } else {
+                document.getElementById('regId').setAttribute('readonly', 'readonly');
+            }
+
+            // Prepare next ID for new registration form
+            await prepareNewRegistrationForm();
+
+            // Refresh UI Views
+            await updateAllViews();
+        }
+
+        async function prepareNewRegistrationForm() {
+            currentEditRegId = null;
+            document.getElementById('registrationForm').reset();
+            const todayIso = getTodayIsoDate();
+            const settings = await getSettings();
+
+            document.getElementById('regDate').value = todayIso;
+            document.getElementById('regBranch').value = settings.defaultBranch;
+            document.getElementById('regAcademy').value = settings.academyName;
+            document.getElementById('regProgram').value = settings.defaultProgram;
+            document.getElementById('regPayment').value = "0";
+
+            // Preview next ID
+            const counterObj = await dbGet('counters', 'registration_seq');
+            let seq = counterObj ? counterObj.lastValue + 1 : 1;
+            const prefix = settings.idPrefix || 'REG-';
+            document.getElementById('regId').value = `${prefix}${String(seq).padStart(6, '0')}`;
+            document.getElementById('regTimestamp').value = formatTimestamp(new Date());
+
+            document.getElementById('btnSaveReg').innerText = 'حفظ التسجيل (Save)';
+            document.getElementById('btnSaveAndNew').style.display = 'inline-flex';
+            document.getElementById('btnCancelEdit').style.display = 'none';
+        }
+
+        async function updateAllViews() {
+            const registrations = await dbGetAll('registrations');
+
+            // Header stats
+            document.getElementById('headerRecordCount').innerText = registrations.length;
+
+            // Update Views
+            await updateDashboard(registrations);
+            await renderRecordsTable(registrations);
+            await renderHistoryTable();
+            generateWhatsAppText();
+        }
+
+        // 1. DASHBOARD LOGIC
+        async function updateDashboard(registrations) {
+            const regs = registrations || await dbGetAll('registrations');
+            const todayIso = getTodayIsoDate();
+
+            const totalRegs = regs.length;
+            const todayRegs = regs.filter(r => r.date === todayIso);
+            const activeRegs = regs.filter(r => r.status === 'Active').length;
+            const pendingRegs = regs.filter(r => r.status === 'Pending').length;
+            const completedRegs = regs.filter(r => r.status === 'Completed').length;
+            const newRegs = regs.filter(r => r.type === 'New' || r.category === 'New Registration').length;
+            const renewalRegs = regs.filter(r => r.type === 'Renew' || r.category === 'Renewal').length;
+            const totalRev = regs.reduce((sum, r) => sum + (parseFloat(r.payment) || 0), 0);
+
+            document.getElementById('dashTotalRegs').innerText = totalRegs;
+            document.getElementById('dashTodayRegs').innerText = todayRegs.length;
+            document.getElementById('dashActiveRegs').innerText = activeRegs;
+            document.getElementById('dashPendingRegs').innerText = pendingRegs;
+            document.getElementById('dashCompletedRegs').innerText = completedRegs;
+            document.getElementById('dashNewRegs').innerText = newRegs;
+            document.getElementById('dashRenewalRegs').innerText = renewalRegs;
+            document.getElementById('dashTotalRevenue').innerText = `${totalRev.toFixed(2)} AED`;
+
+            // Today's summary box
+            const todayRev = todayRegs.reduce((sum, r) => sum + (parseFloat(r.payment) || 0), 0);
+            const todayCash = todayRegs.filter(r => r.paymentMethod === 'Cash').reduce((sum, r) => sum + (parseFloat(r.payment) || 0), 0);
+            const todayCard = todayRegs.filter(r => r.paymentMethod === 'Card').reduce((sum, r) => sum + (parseFloat(r.payment) || 0), 0);
+            const todayNewCount = todayRegs.filter(r => r.type === 'New' || r.category === 'New Registration').length;
+            const todayRenewCount = todayRegs.filter(r => r.type === 'Renew' || r.category === 'Renewal').length;
+            const todaySalesCount = todayRegs.filter(r => r.type === 'Sales' || r.category === 'Sales').length;
+
+            document.getElementById('dashTodayDate').innerText = formatDisplayDate(todayIso);
+            document.getElementById('dashTodayCount').innerText = todayRegs.length;
+            document.getElementById('dashTodayPayments').innerText = `${todayRev.toFixed(2)} AED`;
+            document.getElementById('dashTodayCash').innerText = `${todayCash.toFixed(2)} AED`;
+            document.getElementById('dashTodayCard').innerText = `${todayCard.toFixed(2)} AED`;
+            document.getElementById('dashTodayNew').innerText = todayNewCount;
+            document.getElementById('dashTodayRenew').innerText = todayRenewCount;
+            document.getElementById('dashTodaySales').innerText = todaySalesCount;
+        }
+
+        // 2. REGISTRATION FORM LOGIC
+        async function handleFormSubmit(e) {
+            if (e) e.preventDefault();
+            await saveRegistrationRecord(false);
+        }
+
+        async function saveAndNewForm() {
+            const saved = await saveRegistrationRecord(true);
+            if (saved) {
+                await prepareNewRegistrationForm();
+            }
+        }
+
+        async function saveRegistrationRecord(isSaveAndNew) {
+            const fullName = document.getElementById('regFullName').value.trim();
+            if (!fullName) {
+                alert('يرجى إدخال اسم المشترك الكامل');
+                return false;
+            }
+
+            let regId = document.getElementById('regId').value.trim();
+            let isEdit = !!currentEditRegId;
+
+            if (!isEdit) {
+                // Generate next sequence ID officially
+                regId = await getNextRegistrationId();
+            }
+
+            const record = {
+                id: regId,
+                fullName: fullName,
+                phone: document.getElementById('regPhone').value.trim(),
+                email: document.getElementById('regEmail').value.trim(),
+                date: document.getElementById('regDate').value,
+                timestamp: document.getElementById('regTimestamp').value || formatTimestamp(new Date()),
+                status: document.getElementById('regStatus').value,
+                category: document.getElementById('regCategory').value,
+                type: document.getElementById('regType').value,
+                branch: document.getElementById('regBranch').value.trim(),
+                academy: document.getElementById('regAcademy').value.trim(),
+                program: document.getElementById('regProgram').value.trim(),
+                payment: parseFloat(document.getElementById('regPayment').value) || 0,
+                paymentMethod: document.getElementById('regPaymentMethod').value,
+                notes: document.getElementById('regNotes').value.trim()
+            };
+
+            await dbPut('registrations', record);
+            showToast(isEdit ? 'تم تحديث التسجيل بنجاح' : 'تم حفظ التسجيل بنجاح');
+
+            if (!isSaveAndNew) {
+                await prepareNewRegistrationForm();
+            }
+
+            await updateAllViews();
+            return true;
+        }
+
+        async function editRecord(id) {
+            const record = await dbGet('registrations', id);
+            if (!record) return;
+
+            currentEditRegId = record.id;
+            document.getElementById('regId').value = record.id;
+            document.getElementById('regId').setAttribute('readonly', 'readonly');
+            document.getElementById('regFullName').value = record.fullName || '';
+            document.getElementById('regPhone').value = record.phone || '';
+            document.getElementById('regEmail').value = record.email || '';
+            document.getElementById('regDate').value = record.date || getTodayIsoDate();
+            document.getElementById('regTimestamp').value = record.timestamp || '';
+            document.getElementById('regStatus').value = record.status || 'Active';
+            document.getElementById('regCategory').value = record.category || 'New Registration';
+            document.getElementById('regType').value = record.type || 'New';
+            document.getElementById('regBranch').value = record.branch || '';
+            document.getElementById('regAcademy').value = record.academy || '';
+            document.getElementById('regProgram').value = record.program || '';
+            document.getElementById('regPayment').value = record.payment || 0;
+            document.getElementById('regPaymentMethod').value = record.paymentMethod || 'Cash';
+            document.getElementById('regNotes').value = record.notes || '';
+
+            document.getElementById('btnSaveReg').innerText = 'تحديث التسجيل (Update)';
+            document.getElementById('btnSaveAndNew').style.display = 'none';
+            document.getElementById('btnCancelEdit').style.display = 'inline-flex';
+
+            switchTab('registration');
+        }
+
+        async function cancelEditForm() {
+            await prepareNewRegistrationForm();
+        }
+
+        async function resetRegForm() {
+            await prepareNewRegistrationForm();
+        }
+
+        async function deleteRecord(id) {
+            if (confirm('هل أنت أحدث ومتردد؟ هل تريد حذف هذا التسجيل دائمًا؟')) {
+                await dbDelete('registrations', id);
+                showToast('تم حذف التسجيل');
+                if (currentEditRegId === id) {
+                    await prepareNewRegistrationForm();
+                }
+                await updateAllViews();
+            }
+        }
+
+        // 3. WHATSAPP & DAILY REPORT LOGIC
+        function generateWhatsAppText() {
+            const rawDate = document.getElementById('wpDate').value;
+            const formattedDate = formatDisplayDate(rawDate);
+
+            const attendance = parseInt(document.getElementById('wpAttendance').value) || 0;
+            const newReg = parseInt(document.getElementById('wpNewReg').value) || 0;
+            const newCard = parseFloat(document.getElementById('wpNewCard').value) || 0;
+            const newCash = parseFloat(document.getElementById('wpNewCash').value) || 0;
+            const renewal = parseInt(document.getElementById('wpRenewal').value) || 0;
+
+            const capCount = parseInt(document.getElementById('wpCapCount').value) || 0;
+            const capCard = parseFloat(document.getElementById('wpCapCard').value) || 0;
+            const capCash = parseFloat(document.getElementById('wpCapCash').value) || 0;
+
+            const notes = document.getElementById('wpNotes').value.trim();
+
+            const totalCapRev = capCard + capCash;
+            const totalDailyIncome = newCard + newCash + capCard + capCash;
+
+            let text = `*LEADERS | DAILY REPORT*\n` +
+                       `Date: ${formattedDate}\n\n`;
+
+            if (attendance > 0) text += `Total Student Attendance: *${attendance}*\n`;
+            if (newReg > 0) text += `NEW REGISTRATION: *${newReg}*\n`;
+            if (newCard > 0) text += `CARD PAYMENT: *${newCard} AED*\n`;
+            if (newCash > 0) text += `CASH PAYMENT: *${newCash} AED*\n`;
+            if (renewal > 0) text += `RENEWAL: *${renewal}*\n`;
+
+            if (capCount > 0 || totalCapRev > 0) {
+                text += `\nSWIMMING CAP: *${capCount}*\n`;
+                if (capCard > 0) text += `CAP CARD: *${capCard} AED*\n`;
+                if (capCash > 0) text += `CAP CASH: *${capCash} AED*\n`;
+                if (totalCapRev > 0) text += `TOTAL CAPS: *${totalCapRev} AED*\n`;
+            } else {
+                text += `\nNo swimming caps sold today.\n`;
+            }
+
+            text += `\nTOTAL INCOME: *${totalDailyIncome} AED*\n`;
+
+            if (notes) {
+                text += `\nNotes:\n${notes}`;
+            }
+
+            document.getElementById('whatsappPreview').innerText = text;
+        }
+
+        function copyWhatsAppReport() {
+            const text = document.getElementById('whatsappPreview').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('تم نسخ تقرير الواتساب بنجاح');
+            });
+        }
+
+        function openWhatsApp() {
+            const text = encodeURIComponent(document.getElementById('whatsappPreview').innerText);
             window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
         }
 
-        window.onload = initApp;
+        async function saveDailyReportToHistory() {
+            const rawDate = document.getElementById('wpDate').value;
+            const attendance = parseInt(document.getElementById('wpAttendance').value) || 0;
+            const newReg = parseInt(document.getElementById('wpNewReg').value) || 0;
+            const newCard = parseFloat(document.getElementById('wpNewCard').value) || 0;
+            const newCash = parseFloat(document.getElementById('wpNewCash').value) || 0;
+            const renewal = parseInt(document.getElementById('wpRenewal').value) || 0;
+            const capCount = parseInt(document.getElementById('wpCapCount').value) || 0;
+            const capCard = parseFloat(document.getElementById('wpCapCard').value) || 0;
+            const capCash = parseFloat(document.getElementById('wpCapCash').value) || 0;
+            const notes = document.getElementById('wpNotes').value.trim();
+
+            const totalRev = newCard + newCash + capCard + capCash;
+            const reportId = 'REP-' + Date.now();
+
+            const reportObj = {
+                id: reportId,
+                date: rawDate,
+                timestamp: formatTimestamp(new Date()),
+                attendance: attendance,
+                newReg: newReg,
+                newCard: newCard,
+                newCash: newCash,
+                renewal: renewal,
+                capCount: capCount,
+                capCard: capCard,
+                capCash: capCash,
+                totalRevenue: totalRev,
+                notes: notes
+            };
+
+            await dbPut('report_history', reportObj);
+            showToast('تم حفظ التقرير اليومي في سجل التقارير');
+            await renderHistoryTable();
+        }
+
+        // 4. EXCEL REPORT EXPORT MODULE
+        function toggleExcelDateInputs() {
+            const type = document.getElementById('excelRangeType').value;
+            document.getElementById('excelSingleDateGroup').style.display = (type === 'selected') ? 'block' : 'none';
+            document.getElementById('excelRangeGroup').style.display = (type === 'range') ? 'grid' : 'none';
+        }
+
+        async function exportProfessionalExcel() {
+            const rangeType = document.getElementById('excelRangeType').value;
+            const allRegs = await dbGetAll('registrations');
+            let filtered = [];
+            let dateLabel = 'All Time';
+
+            if (rangeType === 'today') {
+                const todayIso = getTodayIsoDate();
+                filtered = allRegs.filter(r => r.date === todayIso);
+                dateLabel = formatDisplayDate(todayIso);
+            } else if (rangeType === 'selected') {
+                const selDate = document.getElementById('excelSingleDate').value;
+                filtered = allRegs.filter(r => r.date === selDate);
+                dateLabel = formatDisplayDate(selDate);
+            } else if (rangeType === 'range') {
+                const start = document.getElementById('excelStartDate').value;
+                const end = document.getElementById('excelEndDate').value;
+                filtered = allRegs.filter(r => r.date >= start && r.date <= end);
+                dateLabel = `${formatDisplayDate(start)} to ${formatDisplayDate(end)}`;
+            } else {
+                filtered = allRegs;
+            }
+
+            if (filtered.length === 0) {
+                alert('لا توجد سجلات مطابقة لنطاق التقرير المحدد');
+                return;
+            }
+
+            const settings = await getSettings();
+            const title = `${settings.academyName || 'LEADERS'} — DAILY REGISTRATION REPORT`;
+            const xlsxBuffer = buildExcelWorkbook(filtered, title, dateLabel);
+
+            const fileName = `Leaders_Report_${dateLabel.replace(/[/ ]/g, '_')}.xlsx`;
+            downloadBlob(xlsxBuffer, fileName, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            showToast('تم توليد وتنزيل ملف Excel بنجاح');
+        }
+
+        // 5. RECORDS MANAGEMENT LOGIC
+        async function renderRecordsTable(data) {
+            const regs = data || await dbGetAll('registrations');
+            const tbody = document.getElementById('recordsTableBody');
+
+            if (regs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">لا توجد سجلات حالياً</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = regs.map(r => `
+                <tr>
+                    <td><strong>${escapeXml(r.id)}</strong></td>
+                    <td>${escapeXml(formatDisplayDate(r.date))}</td>
+                    <td>${escapeXml(r.fullName)}</td>
+                    <td>${escapeXml(r.phone || '-')}</td>
+                    <td>${escapeXml(r.branch || '-')}</td>
+                    <td>${escapeXml(r.program || '-')}</td>
+                    <td>${escapeXml(r.type || '-')}</td>
+                    <td><strong>${(parseFloat(r.payment) || 0).toFixed(2)} AED</strong></td>
+                    <td>${escapeXml(r.paymentMethod || '-')}</td>
+                    <td><span style="color:var(--text-main); font-weight:600;">${escapeXml(r.status)}</span></td>
+                    <td>
+                        <button class="btn btn-outline" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="editRecord('${r.id}')">تعديل</button>
+                        <button class="btn btn-danger" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="deleteRecord('${r.id}')">حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function filterRecordsTable() {
+            let regs = await dbGetAll('registrations');
+            const search = document.getElementById('recSearch').value.toLowerCase().trim();
+            const status = document.getElementById('recFilterStatus').value;
+            const category = document.getElementById('recFilterCategory').value;
+            const method = document.getElementById('recFilterMethod').value;
+            const branch = document.getElementById('recFilterBranch').value.toLowerCase().trim();
+            const sort = document.getElementById('recSortBy').value;
+
+            if (search) {
+                regs = regs.filter(r =>
+                    (r.id && r.id.toLowerCase().includes(search)) ||
+                    (r.fullName && r.fullName.toLowerCase().includes(search)) ||
+                    (r.phone && r.phone.toLowerCase().includes(search)) ||
+                    (r.email && r.email.toLowerCase().includes(search))
+                );
+            }
+
+            if (status) regs = regs.filter(r => r.status === status);
+            if (category) regs = regs.filter(r => r.category === category);
+            if (method) regs = regs.filter(r => r.paymentMethod === method);
+            if (branch) regs = regs.filter(r => r.branch && r.branch.toLowerCase().includes(branch));
+
+            // Sorting
+            regs.sort((a, b) => {
+                if (sort === 'date-desc') return (b.date || '').localeCompare(a.date || '');
+                if (sort === 'date-asc') return (a.date || '').localeCompare(b.date || '');
+                if (sort === 'id-desc') return (b.id || '').localeCompare(a.id || '');
+                if (sort === 'id-asc') return (a.id || '').localeCompare(b.id || '');
+                if (sort === 'name-asc') return (a.fullName || '').localeCompare(b.fullName || '');
+                if (sort === 'payment-desc') return (parseFloat(b.payment) || 0) - (parseFloat(a.payment) || 0);
+                return 0;
+            });
+
+            await renderRecordsTable(regs);
+        }
+
+        // 6. REPORT HISTORY LOGIC
+        async function renderHistoryTable() {
+            const reports = await dbGetAll('report_history');
+            const tbody = document.getElementById('historyTableBody');
+
+            if (reports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">لا توجد تقارير محفوظة</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = reports.map(rep => `
+                <tr>
+                    <td><strong>${escapeXml(rep.id)}</strong></td>
+                    <td>${escapeXml(formatDisplayDate(rep.date))}</td>
+                    <td>${escapeXml(rep.timestamp)}</td>
+                    <td>${rep.attendance}</td>
+                    <td><strong>${(rep.totalRevenue || 0).toFixed(2)} AED</strong></td>
+                    <td>${rep.newReg}</td>
+                    <td>${rep.renewal}</td>
+                    <td>
+                        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="reopenReportHistory('${rep.id}')">عرض</button>
+                        <button class="btn btn-danger" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="deleteReportHistory('${rep.id}')">حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function reopenReportHistory(id) {
+            const rep = await dbGet('report_history', id);
+            if (!rep) return;
+
+            document.getElementById('wpDate').value = rep.date;
+            document.getElementById('wpAttendance').value = rep.attendance;
+            document.getElementById('wpNewReg').value = rep.newReg;
+            document.getElementById('wpNewCard').value = rep.newCard;
+            document.getElementById('wpNewCash').value = rep.newCash;
+            document.getElementById('wpRenewal').value = rep.renewal;
+            document.getElementById('wpCapCount').value = rep.capCount;
+            document.getElementById('wpCapCard').value = rep.capCard;
+            document.getElementById('wpCapCash').value = rep.capCash;
+            document.getElementById('wpNotes').value = rep.notes || '';
+
+            generateWhatsAppText();
+            switchTab('whatsapp');
+            showToast('تم تحميل التقرير للمعاينة');
+        }
+
+        async function deleteReportHistory(id) {
+            if (confirm('هل أنت أحدث ومتردد؟ هل تريد حذف هذا التقرير من السجل؟')) {
+                await dbDelete('report_history', id);
+                showToast('تم حذف التقرير');
+                await renderHistoryTable();
+            }
+        }
+
+        // 7. BACKUP & RESTORE LOGIC
+        async function exportFullBackup() {
+            const registrations = await dbGetAll('registrations');
+            const dailyReports = await dbGetAll('daily_reports');
+            const reportHistory = await dbGetAll('report_history');
+            const settings = await dbGetAll('settings');
+            const counters = await dbGetAll('counters');
+
+            const backupData = {
+                app: 'LeadersSystem',
+                version: '1.0',
+                exportTimestamp: new Date().toISOString(),
+                data: {
+                    registrations,
+                    dailyReports,
+                    reportHistory,
+                    settings,
+                    counters
+                }
+            };
+
+            const jsonStr = JSON.stringify(backupData, null, 2);
+            const fileName = `Leaders_Backup_${getTodayIsoDate()}.json`;
+            downloadBlob(new TextEncoder().encode(jsonStr), fileName, 'application/json');
+            showToast('تم إستخراج ملف النسخة الاحتياطية بنجاح');
+        }
+
+        async function chooseLocalDirectoryBackup() {
+            if ('showSaveFilePicker' in window) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: `Leaders_Backup_${getTodayIsoDate()}.json`,
+                        types: [{
+                            description: 'JSON Backup File',
+                            accept: { 'application/json': ['.json'] }
+                        }]
+                    });
+                    const registrations = await dbGetAll('registrations');
+                    const dailyReports = await dbGetAll('daily_reports');
+                    const reportHistory = await dbGetAll('report_history');
+                    const settings = await dbGetAll('settings');
+                    const counters = await dbGetAll('counters');
+
+                    const backupData = {
+                        app: 'LeadersSystem',
+                        version: '1.0',
+                        exportTimestamp: new Date().toISOString(),
+                        data: { registrations, dailyReports, reportHistory, settings, counters }
+                    };
+
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify(backupData, null, 2));
+                    await writable.close();
+                    showToast('تم حفظ النسخة الاحتياطية في المجلد المختار بنجاح');
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        alert('حدث خطأ أثناء حفظ الملف: ' + err.message);
+                    }
+                }
+            } else {
+                exportFullBackup();
+            }
+        }
+
+        async function processBackupRestore(mode) {
+            const fileInput = document.getElementById('backupFileInput');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('يرجى اختيار ملف JSON أولاً');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function (e) {
+                try {
+                    const backupObj = JSON.parse(e.target.result);
+                    if (!backupObj || backupObj.app !== 'LeadersSystem' || !backupObj.data) {
+                        alert('ملف النسخة الاحتياطية غير صالحة أو غريبه عن النظام!');
+                        return;
+                    }
+
+                    const data = backupObj.data;
+                    const regCount = (data.registrations || []).length;
+
+                    const confirmMsg = mode === 'replace'
+                        ? `تحذير: سيتم استبدال كل البيانات الحالية بـ ${regCount} سجل من الملف الاحتياطي. هل تريد المتابعة؟`
+                        : `سيتم دمج ${regCount} سجل مع البيانات الحالية. هل تريد المتابعة؟`;
+
+                    if (!confirm(confirmMsg)) return;
+
+                    if (mode === 'replace') {
+                        await dbClear('registrations');
+                        await dbClear('daily_reports');
+                        await dbClear('report_history');
+                        await dbClear('settings');
+                        await dbClear('counters');
+                    }
+
+                    for (const item of (data.registrations || [])) await dbPut('registrations', item);
+                    for (const item of (data.dailyReports || [])) await dbPut('daily_reports', item);
+                    for (const item of (data.reportHistory || [])) await dbPut('report_history', item);
+                    for (const item of (data.settings || [])) await dbPut('settings', item);
+                    for (const item of (data.counters || [])) await dbPut('counters', item);
+
+                    showToast('تمت استعادة النسخة الاحتياطية بنجاح');
+                    fileInput.value = '';
+                    await initApp();
+                } catch (err) {
+                    alert('خطأ في قراءة وقبول الملف: ' + err.message);
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        // 8. SETTINGS FORM LOGIC
+        async function saveSettingsForm(e) {
+            if (e) e.preventDefault();
+            const settingsObj = {
+                academyName: document.getElementById('setAcademyName').value.trim(),
+                defaultBranch: document.getElementById('setDefaultBranch').value.trim(),
+                defaultProgram: document.getElementById('setDefaultProgram').value.trim(),
+                defaultCurrency: document.getElementById('setDefaultCurrency').value.trim(),
+                idPrefix: document.getElementById('setIdPrefix').value.trim(),
+                allowManualId: document.getElementById('setAllowManualId').value
+            };
+
+            await saveSettings(settingsObj);
+            showToast('تم حفظ الإعدادات بنجاح');
+            await initApp();
+        }
+
+        // Developer Test Data Trigger
+        async function loadDeveloperTestData() {
+            if (!confirm('هل تريد إضافة سجلات تجريبية للاختبار والتأكد من الميزات؟')) return;
+
+            const todayIso = getTodayIsoDate();
+            const testRegs = [
+                {
+                    id: 'REG-000001',
+                    fullName: 'أحمد علي منصور',
+                    phone: '0501234567',
+                    email: 'ahmed@example.com',
+                    date: todayIso,
+                    timestamp: formatTimestamp(new Date()),
+                    status: 'Active',
+                    category: 'New Registration',
+                    type: 'New',
+                    branch: 'ISCS MUW',
+                    academy: 'Swimming Academy',
+                    program: 'Level 1 Swimming',
+                    payment: 1200,
+                    paymentMethod: 'Card',
+                    notes: 'تسجيل جديد - دفع كامل'
+                },
+                {
+                    id: 'REG-000002',
+                    fullName: 'محمد خالد الشامسي',
+                    phone: '0559876543',
+                    email: 'm.khaled@example.com',
+                    date: todayIso,
+                    timestamp: formatTimestamp(new Date()),
+                    status: 'Active',
+                    category: 'Renewal',
+                    type: 'Renew',
+                    branch: 'ISCS MUW',
+                    academy: 'Swimming Academy',
+                    program: 'Advanced Swimming',
+                    payment: 850,
+                    paymentMethod: 'Cash',
+                    notes: 'تجديد اشتراك دورة ثانية'
+                }
+            ];
+
+            for (const item of testRegs) {
+                await dbPut('registrations', item);
+            }
+            await dbPut('counters', { key: 'registration_seq', lastValue: 2 });
+
+            showToast('تم إضافة بيانات تجريبية بنجاح');
+            await updateAllViews();
+        }
+
+        // Window Init Event Hook
+        window.addEventListener('DOMContentLoaded', initApp);
+
+        // Global State & Navigation Logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+
+            const targetNav = Array.from(document.querySelectorAll('.nav-item')).find(el => el.getAttribute('onclick').includes(tabName));
+            if (targetNav) targetNav.classList.add('active');
+
+            const targetPane = document.getElementById('tab-' + tabName);
+            if (targetPane) targetPane.classList.add('active');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastMessage');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
